@@ -10,9 +10,13 @@ Date_time<-strptime(combo_time, format = "%d/%m/%Y %H:%M:%S")
 cutdata1<-select(cutdata, Global_active_power : Sub_metering_3)
 dataready<- cbind(Date_time, cutdata1)
 dataready<- mutate(dataready, weekday=wday(Date_time, label = TRUE, abbr = TRUE))
-## histogram fun
-par(mfrow = c(1,1), mar = c(3, 3, 3, 3))
-plot1<-hist(dataready$Global_active_power, col = "red", xlab = "Global Active Power (kilowatts)", ylab = "Frequency", main = paste("Global Active Power"))
+## Fun with data subsets
+par(mar = c(2, 4, 1, 1))
+with(dataready, plot(Date_time, Sub_metering_1, type = "n", main = "", ylab = "Engery sub metering", xlab = ""))
+lines(dataready$Date_time, dataready$Sub_metering_1, col = "black")
+lines(dataready$Date_time, dataready$Sub_metering_2, col = "red")
+lines(dataready$Date_time, dataready$Sub_metering_3, col = "blue")
+legend("topright", lwd = 1, bg = "transparent", col = c("black", "red", "blue"), legend = c("Sub_metering_1", "Sub_metering_2", "Sub_metering_3"))
 ## Print to PNG and turn device off
-dev.copy(png, file = "Plot1.png")
+dev.copy(png, file = "plot3.png")
 dev.off()
